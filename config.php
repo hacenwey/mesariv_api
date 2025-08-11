@@ -1,8 +1,9 @@
 <?php
-$host = "localhost";
-$dbname = "gestion_app";
-$username = "root";
-$password = "";
+$host = getenv('MYSQL_HOST'); // ou l'adresse IP du serveur MySQL
+$db_name = getenv('MYSQL_DATABASE');
+$username = getenv('MYSQL_USER');
+$password = getenv('MYSQL_PASSWORD');
+$port = 3306;
 
 try {
     $pdo = new PDO("mysql:host=$host;dbname=$dbname;charset=utf8", $username, $password);
