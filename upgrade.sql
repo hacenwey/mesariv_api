@@ -14,6 +14,9 @@ CREATE TABLE clients (
     phone TEXT,
     FOREIGN KEY (user_id) REFERENCES users (id)
 );
+ALTER TABLE clients
+ADD COLUMN date TEXT NOT NULL DEFAULT CURRENT_TIMESTAMP,
+ADD COLUMN amount REAL NOT NULL DEFAULT 0;
 
 -- Table des transactions (recettes et dépenses)
 CREATE TABLE transactions (
