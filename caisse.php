@@ -27,10 +27,9 @@ if ($action === 'add_movement') {
     $type = $body['type'] ?? 'recette';
     $amount = floatval($body['amount'] ?? 0);
     if (!$user_id || !$amount) { http_response_code(400); echo json_encode(["status"=>"error","message"=>"Missing"]); exit; }
- 
-        $solde = ($type=='recette') ? $amount : -$amount;
+
         $stmt2 = $pdo->prepare("INSERT INTO caisse (user_id, solde,type) VALUES (?, ?,?)");
-        $stmt2->execute([$user_id, $solde, $type]);
+        $stmt2->execute([$user_id, $amount, $type]);
    
     echo json_encode(["status"=>"success"]);
     exit;
