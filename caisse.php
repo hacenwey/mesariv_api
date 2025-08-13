@@ -3,16 +3,28 @@ require 'config.php';
 $action = $_GET['action'] ?? '';
 
 if ($action === 'get') {
-    $stmt = $pdo->prepare("SELECT * FROM caisse");
-    $stmt->execute();
+    $user_id = intval($_GET['user_id'] ?? 0);
+    if (!$user_id) {
+        http_response_code(400);
+        echo json_encode(["status"=>"error","message"=>"Missing user_id"]);
+        exit;
+    }
+    $stmt = $pdo->prepare("SELECT * FROM caisse WHERE user_id = ?");
+    $stmt->execute([$user_id]);
     $rows = $stmt->fetchAll(PDO::FETCH_ASSOC);
     echo json_encode($rows);
     exit;
 }
 
 if ($action === 'get_all_caisses') {
-    $stmt = $pdo->prepare("SELECT type, SUM(solde) as amount FROM caisse GROUP BY type");
-    $stmt->execute();
+    $user_id = intval($_GET['user_id'] ?? 0);
+    if (!$user_id) {
+        http_response_code(400);
+        echo json_encode(["status"=>"error","message"=>"Missing user_id"]);
+        exit;
+    }
+    $stmt = $pdo->prepare("SELECT type, SUM(solde) as amount FROM caisse WHERE user_id = ? GROUP BY type");
+    $stmt->execute([$user_id]);
     $rows = $stmt->fetchAll(PDO::FETCH_ASSOC);
     $res = [
         'restant' => 0,
