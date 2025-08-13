@@ -3,16 +3,10 @@ require 'config.php';
 $action = $_GET['action'] ?? '';
 
 if ($action === 'get') {
-    $user_id = intval($_GET['user_id'] ?? 0);
-    $stmt = $pdo->prepare("SELECT * FROM caisse WHERE user_id = ?");
-    $stmt->execute([$user_id]);
-    $row = $stmt->fetch(PDO::FETCH_ASSOC);
-    if (!$row) {
-        $stmt2 = $pdo->prepare("INSERT INTO caisse (user_id,solde) VALUES (?, 0)");
-        $stmt2->execute([$user_id]);
-        $row = ['id'=>$pdo->lastInsertId(),'user_id'=>$user_id,'solde'=>0];
-    }
-    echo json_encode($row);
+    $stmt = $pdo->prepare("SELECT * FROM caisse");
+    $stmt->execute();
+    $rows = $stmt->fetchAll(PDO::FETCH_ASSOC);
+    echo json_encode($rows);
     exit;
 }
 

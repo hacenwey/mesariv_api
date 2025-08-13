@@ -37,3 +37,11 @@ CREATE TABLE caisse (
     solde REAL NOT NULL DEFAULT 0,
     FOREIGN KEY (user_id) REFERENCES users (id)
 );
+
+ALTER TABLE caisse
+ADD COLUMN type VARCHAR(20) NOT NULL DEFAULT 'recette'
+CHECK (type IN ('recette', 'depense'));
+
+ALTER TABLE caisse
+ADD COLUMN date DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP;
+
