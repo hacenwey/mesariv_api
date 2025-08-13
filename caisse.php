@@ -10,6 +10,27 @@ if ($action === 'get') {
     exit;
 }
 
+if ($action === 'get_all_caisses') {
+    $stmt = $pdo->prepare("SELECT type, SUM(solde) as amount FROM caisse GROUP BY type");
+    $stmt->execute();
+    $rows = $stmt->fetchAll(PDO::FETCH_ASSOC);
+    $res = [
+        'restant' => 0,
+        'all_recettes' => 0,
+        'all_depenses' => 0
+    ];
+    foreach ($rows as $row) {
+        if ($row['type'] === 'recette') {
+            $res['all_recettes'] = $row['amount'];
+        } else {
+            $res['all_depenses'] = $row['amount'];
+        }
+    }
+    $res['restant'] = $res['all_recettes'] - $res['all_depenses'];
+    echo json_encode($res);
+    exit;
+}
+
 $body = json_decode(file_get_contents("php://input"), true);
 
 if ($action === 'update') {
