@@ -8,6 +8,9 @@ if ($action === 'delete') {
     $id = intval($_GET['id']);
     $stmt = $pdo->prepare("DELETE FROM transactions WHERE id = ?");
     $stmt->execute([$id]);
+
+    $stmt = $pdo->prepare("DELETE FROM caisse WHERE transaction_id = ?");
+    $stmt->execute([$id]);
     echo json_encode(["status" => "success", "message" => "Client supprimé"]);
     exit;
 }
