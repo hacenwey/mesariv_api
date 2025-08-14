@@ -2,9 +2,7 @@
 require 'config.php';
 
 $data = json_decode(file_get_contents("php://input"));
-$user_id = $data->user_id;
-$name = $data->name;
-$phone = $data->phone;
+
 $action = $data->action ?? '';
 
 if ($action === 'delete') {
@@ -14,6 +12,9 @@ if ($action === 'delete') {
     echo json_encode(["status" => "success", "message" => "Client supprimé"]);
     exit;
 }
+$user_id = $data->user_id;
+$name = $data->name;
+$phone = $data->phone;
 
 $stmt = $pdo->prepare("INSERT INTO clients (user_id, name, phone) VALUES (?, ?, ?)");
 $stmt->execute([$user_id, $name, $phone]);
