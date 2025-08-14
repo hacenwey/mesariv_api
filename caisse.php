@@ -8,12 +8,13 @@ if ($action === 'get') {
         echo json_encode(["status"=>"error","message"=>"Missing user_id"]);
         exit;
     }
-    $stmt = $pdo->prepare("SELECT cl.name as client_name, c.* FROM caisse c LEFT JOIN transactions t ON c.transaction_id = t.id LEFT JOIN clients cl ON t.client_id = cl.id WHERE c.user_id = ?");
+    $stmt = $pdo->prepare("SELECT cl.name as client_name,cl.phone as client_phone, c.* FROM caisse c LEFT JOIN transactions t ON c.transaction_id = t.id LEFT JOIN clients cl ON t.client_id = cl.id WHERE c.user_id = ?");
     $stmt->execute([$user_id]);
     $rows = $stmt->fetchAll(PDO::FETCH_ASSOC);
     foreach ($rows as &$row) {
         if ($row['transaction_id'] !== null) {
             $row['client_name'] = $row['client_name'] ?? '';
+            $row['client_phone'] = $row['client_phone'] ?? '';
         }
     }
     echo json_encode($rows);
