@@ -8,7 +8,7 @@ if ($action === 'get') {
         echo json_encode(["status"=>"error","message"=>"Missing user_id"]);
         exit;
     }
-    $stmt = $pdo->prepare("SELECT c.name as client_name, * FROM caisse c LEFT JOIN transactions t ON c.transaction_id = t.id LEFT JOIN clients cl ON t.client_id = cl.id WHERE c.user_id = ?");
+    $stmt = $pdo->prepare("SELECT c.name as client_name, c.* FROM caisse c LEFT JOIN transactions t ON c.transaction_id = t.id LEFT JOIN clients cl ON t.client_id = cl.id WHERE c.user_id = ?");
     $stmt->execute([$user_id]);
     $rows = $stmt->fetchAll(PDO::FETCH_ASSOC);
     foreach ($rows as &$row) {
