@@ -3,7 +3,7 @@ require 'config.php';
 
 $user_id = $_GET['user_id'] ?? 0;
 
-$stmt = $pdo->prepare("SELECT c.name, c.phone, c.date, COUNT(t.id) as transactions,
+$stmt = $pdo->prepare("SELECT c.*, COUNT(t.id) as transactions,
     (COALESCE(SUM(CASE WHEN t.type = 'recette' THEN t.amount END), 0) - COALESCE(SUM(CASE WHEN t.type = 'depense' THEN t.amount END), 0)) as total_amount
 FROM clients c LEFT JOIN transactions t ON c.id = t.client_id WHERE c.user_id = ? GROUP BY c.id");
 $stmt->execute([$user_id]);
