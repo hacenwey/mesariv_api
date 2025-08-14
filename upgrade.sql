@@ -57,3 +57,6 @@ CHECK (from IN ('caisse', 'transaction'));
 
 ALTER TABLE caisse
 ADD COLUMN transaction_id INTEGER DEFAULT NULL;
+
+ALTER TABLE clients
+ADD COLUMN deleted_at TEXT DEFAULT NULL;
