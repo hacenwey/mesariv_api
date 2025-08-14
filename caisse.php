@@ -70,7 +70,7 @@ if ($action === 'add_movement') {
     $note = $body['note'] ?? '';
     if (!$user_id || !$amount) { http_response_code(400); echo json_encode(["status"=>"error","message"=>"Missing"]); exit; }
 
-        $stmt2 = $pdo->prepare("INSERT INTO caisse (user_id, solde,type, note) VALUES (?, ?,?.?)");
+        $stmt2 = $pdo->prepare("INSERT INTO caisse (user_id, solde,type, note) VALUES (?, ?,?,?)");
         $stmt2->execute([$user_id, $amount, $type, $note]);
    
     echo json_encode(["status"=>"success"]);
