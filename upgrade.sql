@@ -50,3 +50,10 @@ ADD COLUMN note TEXT DEFAULT NULL;
 
 ALTER TABLE caisse
 ADD COLUMN note TEXT DEFAULT NULL;
+
+ALTER TABLE caisse
+ADD COLUMN from VARCHAR(20) NOT NULL DEFAULT 'caisse'
+CHECK (from IN ('caisse', 'transaction'));
+
+ALTER TABLE caisse
+ADD COLUMN transaction_id INTEGER DEFAULT NULL;

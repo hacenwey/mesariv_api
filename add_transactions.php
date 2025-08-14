@@ -21,8 +21,9 @@ $note = $data->note;
 
 $stmt = $pdo->prepare("INSERT INTO transactions (user_id, client_id, type, amount, note) VALUES (?, ?, ?,?, ?)");
 $stmt->execute([$user_id, $client_id, $type, $amount, $note]);
+$transaction_id = $pdo->lastInsertId();
 
-$stmt2 = $pdo->prepare("INSERT INTO caisse (user_id, solde,type, note) VALUES (?, ?,?,?)");
-$stmt2->execute([$user_id, $amount, $type, $note]);
+$stmt2 = $pdo->prepare("INSERT INTO caisse (user_id, solde,type, note,source,transaction_id) VALUES (?, ?,?,?,?,?)");
+$stmt2->execute([$user_id, $amount, $type, $note, 'transaction', $transaction_id]);
 echo json_encode(["status" => "success", "message" => "Client ajouté"]);
 ?>
