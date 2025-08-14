@@ -45,6 +45,14 @@ if ($action === 'get_all_caisses') {
 
 $body = json_decode(file_get_contents("php://input"), true);
 
+
+if ($action === 'delete') {
+    $id = intval($_GET['id']);
+    $stmt = $pdo->prepare("DELETE FROM caisse WHERE id = ?");
+    $stmt->execute([$id]);
+    echo json_encode(["status" => "success", "message" => "Caisse supprimé"]);
+    exit;
+}
 if ($action === 'update') {
     $user_id = intval($_GET['user_id'] ?? ($body['user_id'] ?? 0));
     $solde = floatval($body['solde'] ?? 0);
@@ -59,10 +67,11 @@ if ($action === 'add_movement') {
     $user_id = intval($_GET['user_id'] ?? ($body['user_id'] ?? 0));
     $type = $body['type'] ?? 'recette';
     $amount = floatval($body['amount'] ?? 0);
+    $note = $body['note'] ?? '';
     if (!$user_id || !$amount) { http_response_code(400); echo json_encode(["status"=>"error","message"=>"Missing"]); exit; }
 
-        $stmt2 = $pdo->prepare("INSERT INTO caisse (user_id, solde,type) VALUES (?, ?,?)");
-        $stmt2->execute([$user_id, $amount, $type]);
+        $stmt2 = $pdo->prepare("INSERT INTO caisse (user_id, solde,type, note) VALUES (?, ?,?.?)");
+        $stmt2->execute([$user_id, $amount, $type, $note]);
    
     echo json_encode(["status"=>"success"]);
     exit;
