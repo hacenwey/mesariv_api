@@ -9,7 +9,7 @@ if ($action === 'delete') {
     $stmt = $pdo->prepare("SELECT id FROM transactions WHERE client_id = ?");
     $stmt->execute([$id]);
     $transactions = $stmt->fetchAll(PDO::FETCH_COLUMN);
-    if (empty($transactions)) {
+    if (!empty($transactions)) {
         $placeholders = implode(',', array_fill(0, count($transactions), '?'));
         $stmt = $pdo->prepare("DELETE FROM caisse WHERE transaction_id IN ($placeholders)");
         $stmt->execute($transactions);
